@@ -20,7 +20,10 @@ export class RegistrationFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadUsersFromLocalStorage(); // Load users on component init
+    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    if (storedUsers) {
+      this.registeredUsers = storedUsers;
+    }
   }
 
   get f() {
@@ -29,51 +32,28 @@ export class RegistrationFormComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
-    // If form is invalid, do not proceed
     if (this.registrationForm.invalid) {
       return;
     }
 
     const email = this.registrationForm.value.email;
-
-    // Check if the email already exists in localStorage
     if (this.isEmailRegistered(email)) {
       alert('This email is already registered!');
       return;
     }
-
-    // Add new user to registeredUsers array and update localStorage
     this.registeredUsers.push(this.registrationForm.value);
-    this.updateLocalStorage();
-
-    // Reset form and submitted flag
+    localStorage.setItem('users', JSON.stringify(this.registeredUsers));
     this.registrationForm.reset();
     this.submitted = false;
   }
 
-  // Check if email already exists in registeredUsers
   isEmailRegistered(email: string): boolean {
     const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
     return storedUsers.some((user: any) => user.email === email);
   }
 
-  // Save registered users to localStorage
-  updateLocalStorage() {
-    localStorage.setItem('users', JSON.stringify(this.registeredUsers));
-  }
-
-  // Load users from localStorage on component initialization
-  loadUsersFromLocalStorage() {
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    if (storedUsers) {
-      this.registeredUsers = storedUsers;
-    }
-  }
-
-  // Clear all registered users
   clearRegisteredUsers() {
-    localStorage.removeItem('users'); // Clear localStorage
-    this.registeredUsers = []; // Reset the array
+    localStorage.removeItem('users');
+    this.registeredUsers = [];
   }
 }
