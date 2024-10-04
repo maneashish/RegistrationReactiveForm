@@ -1,6 +1,7 @@
 # UserRegistreation
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.6.
+
 Project: Responsive Registration Form with Local Storage
 Description:
 This project is a responsive user registration form built using Angular, Bootstrap, and HTML/CSS. It demonstrates proficiency in creating interactive forms, implementing form validation, and managing user data with local storage.
